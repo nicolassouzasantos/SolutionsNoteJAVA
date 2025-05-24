@@ -46,7 +46,7 @@ GET http://localhost:8080/automoveis?page=0&size=10&sort=placa,asc
 -Buscar automóvel por ID
 GET http://localhost:8080/automoveis/1
 
--  Buscar automóveis por placa (ex: ABC1234)
+-Buscar automóveis por placa (ex: ABC1234)
 GET http://localhost:8080/automoveis?placa=ABC1234
 
 PUT:
