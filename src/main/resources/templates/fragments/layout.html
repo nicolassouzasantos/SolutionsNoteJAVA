@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Solutions Note</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<header th:fragment="header">
+    <div class="header-content">
+        <h1>Solutions Note</h1>
+        <p class="subtitle">Gestão de automóveis apreendidos</p>
+    </div>
+</header>
+<nav th:fragment="menu">
+    <div class="nav-left">
+        <a th:href="@{/automoveis-ui}">Automóveis</a>
+    </div>
+    <div class="nav-right">
+        <div class="user-info" sec:authorize="isAuthenticated()">
+            <span>Olá, <strong sec:authentication="name"></strong></span>
+            <span class="badge" sec:authorize="hasRole('ADMIN')">Administrador</span>
+            <span class="badge" sec:authorize="hasRole('OPERADOR')">Operador</span>
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="button secondary small">Sair</button>
+            </form>
+        </div>
+        <a class="button primary small" sec:authorize="isAnonymous()" th:href="@{/login}">Entrar</a>
+    </div>
+</nav>
+<footer th:fragment="footer">
+    <p>&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> Solutions Note. Todos os direitos reservados.</p>
+</footer>
+</body>
+</html>

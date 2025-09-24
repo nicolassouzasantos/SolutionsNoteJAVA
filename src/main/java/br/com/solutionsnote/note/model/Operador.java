@@ -1,7 +1,9 @@
 package br.com.solutionsnote.note.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Operador {
@@ -16,7 +18,12 @@ public class Operador {
     private String login;
 
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PerfilOperador perfil;
 
     public Long getId() {
         return id;
@@ -48,5 +55,13 @@ public class Operador {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public PerfilOperador getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(PerfilOperador perfil) {
+        this.perfil = perfil;
     }
 }
