@@ -7,6 +7,7 @@ import br.com.solutionsnote.note.service.AutomovelService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +26,14 @@ public class AutomovelViewController {
         this.patioRepository = patioRepository;
     }
 
+    @PreAuthorize("hasAnyRole('OPERADOR','ADMIN')")
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("automoveis", automovelService.listarTodos());
         return "automoveis/list";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/novo")
     public String novo(Model model) {
         if (!model.containsAttribute("automovelForm")) {
@@ -40,6 +43,7 @@ public class AutomovelViewController {
         return "automoveis/form";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public String criar(@Valid @ModelAttribute("automovelForm") AutomovelForm form,
                         BindingResult result,
@@ -55,6 +59,7 @@ public class AutomovelViewController {
         return "redirect:/automoveis-ui";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
@@ -70,6 +75,7 @@ public class AutomovelViewController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}")
     public String atualizar(@PathVariable Long id,
                             @Valid @ModelAttribute("automovelForm") AutomovelForm form,
@@ -90,6 +96,7 @@ public class AutomovelViewController {
         return "redirect:/automoveis-ui";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
