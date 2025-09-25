@@ -1,0 +1,57 @@
+INSERT INTO PATIO (NOME, ENDERECO)
+SELECT 'Pátio Central', 'Rua das Flores, 123 - Centro'
+WHERE NOT EXISTS (SELECT 1 FROM PATIO WHERE NOME = 'Pátio Central');
+
+INSERT INTO PATIO (NOME, ENDERECO)
+SELECT 'Pátio Norte', 'Avenida do Sol, 456 - Zona Norte'
+WHERE NOT EXISTS (SELECT 1 FROM PATIO WHERE NOME = 'Pátio Norte');
+
+INSERT INTO OPERADOR (NOME, LOGIN, SENHA, PERFIL)
+SELECT 'Administrador', 'admin', '{noop}admin123', 'ADMIN'
+WHERE NOT EXISTS (SELECT 1 FROM OPERADOR WHERE LOGIN = 'admin');
+
+INSERT INTO OPERADOR (NOME, LOGIN, SENHA, PERFIL)
+SELECT 'Operador de Pátio', 'operador', '{noop}operador123', 'OPERADOR'
+WHERE NOT EXISTS (SELECT 1 FROM OPERADOR WHERE LOGIN = 'operador');
+
+INSERT INTO AUTOMOVEL (
+    PLACA,
+    CHASSI,
+    TIPO,
+    COR,
+    LOCALIZACAO_NO_PATIO,
+    COMENTARIOS,
+    PATIO_ID
+)
+SELECT
+    'ABC1D23',
+    '9BWZZZ377VT004251',
+    'Sedan',
+    'Prata',
+    'A1',
+    'Veículo de demonstração disponível para test drive',
+    p.ID
+FROM PATIO p
+WHERE p.NOME = 'Pátio Central'
+  AND NOT EXISTS (SELECT 1 FROM AUTOMOVEL WHERE PLACA = 'ABC1D23');
+
+INSERT INTO AUTOMOVEL (
+    PLACA,
+    CHASSI,
+    TIPO,
+    COR,
+    LOCALIZACAO_NO_PATIO,
+    COMENTARIOS,
+    PATIO_ID
+)
+SELECT
+    'DEF4G56',
+    '9BWZZZ377VT004252',
+    'SUV',
+    'Preto',
+    'B2',
+    'Reservado para cliente VIP',
+    p.ID
+FROM PATIO p
+WHERE p.NOME = 'Pátio Norte'
+  AND NOT EXISTS (SELECT 1 FROM AUTOMOVEL WHERE PLACA = 'DEF4G56');
